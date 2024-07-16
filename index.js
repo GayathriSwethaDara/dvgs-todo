@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const path = require("path");
 
 const PORT=8000;
 
@@ -12,9 +13,31 @@ mongoose.connect(connectionUrl).then(() => console.log("database connected succe
 
 //view engine
 app.set("view engine","ejs");
+app.use(express.static(path.join(__dirname,"public")));
 app.get("/",(req,res,next)=>{
     try{
         res.render("index");
+    } catch(error){
+        res.status(500).json({message: error.message});
+    }
+});
+app.get("/add-todo",(req,res,next)=>{
+    try{
+        res.render("addtodo");
+    } catch(error){
+        res.status(500).json({message: error.message});
+    }
+});
+app.get("/edit-todo",(req,res,next)=>{
+    try{
+        res.render("edittodo");
+    } catch(error){
+        res.status(500).json({message: error.message});
+    }
+});
+app.get("/delete-todo",(req,res,next)=>{
+    try{
+        res.render("deletetodo");
     } catch(error){
         res.status(500).json({message: error.message});
     }
