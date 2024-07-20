@@ -1,11 +1,12 @@
 const { timeStamp } = require("console");
 const express = require("express");
-const mongoose = require("mongoose");
 const { type } = require("os");
 const path = require("path");
 const { title } = require("process");
 const bodyparser = require("body-parser");
 const moment = require("moment");
+const connectMongodb = require("./init/mongodb");
+const Todo = require("./models/Todo");
 
 const PORT = 8000;
 
@@ -13,10 +14,7 @@ const PORT = 8000;
 const app = express();
 
 //connectiong to db
-const connectionUrl = "mongodb://localhost:27017/todoDb";
-mongoose.connect(connectionUrl).then(() => console.log("database connected successfully")).catch((error) => console.log(error.message));
-const todoSchema = mongoose.Schema({ title: { type: String }, desc: String }, { timestamps: true });
-const Todo = mongoose.model("todo", todoSchema);
+connectMongodb();
 
 //view engine
 app.set("view engine", "ejs");
