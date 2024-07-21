@@ -19,11 +19,11 @@ const addTodoFormController = (req, res, next) => {
     }
 };
 
-const updateFormController = async(req, res, next) => {
+const updateFormController = async (req, res, next) => {
     try {
-        const {id}=req.query;
+        const { id } = req.query;
         const todo = await Todo.findById(id);
-        res.render("edittodo",{todo});
+        res.render("edittodo", { todo });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -31,7 +31,8 @@ const updateFormController = async(req, res, next) => {
 
 const deleteFormController = (req, res, next) => {
     try {
-        res.render("deletetodo");
+        const { id } = req.query;
+        res.render("deletetodo", { id });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -50,14 +51,14 @@ const addTodoController = async (req, res, next) => {
 
 const updateTodoController = async (req, res, next) => {
     try {
-        const {id} = req.params;
+        const { id } = req.params;
         const { title, desc } = req.body;
         const todo = await Todo.findById(id);
-        if(!todo){
-            return res.status(400).json({message: "Todo not found"});
+        if (!todo) {
+            return res.status(400).json({ message: "Todo not found" });
         }
-        todo.title=title;
-        todo.desc=desc;
+        todo.title = title;
+        todo.desc = desc;
         await todo.save();
         res.redirect("/");
     } catch (error) {
@@ -65,4 +66,19 @@ const updateTodoController = async (req, res, next) => {
     }
 };
 
-module.exports = { homeController, addTodoFormController, updateFormController, deleteFormController, addTodoController,updateTodoController};
+const deleteTodoController = async (req, res, next) => {
+    try {
+      const { id, confirm } = req.query;
+  
+      if (confirm === "yes") {
+        await Todo.findByIdAndDelete(id);
+      }
+  
+      res.redirect("/");
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+  
+
+module.exports = { homeController, addTodoFormController, updateFormController, deleteFormController, addTodoController, updateTodoController, deleteTodoController, };
