@@ -19,9 +19,11 @@ const addTodoFormController = (req, res, next) => {
     }
 };
 
-const updateFormController = (req, res, next) => {
+const updateFormController = async(req, res, next) => {
     try {
-        res.render("edittodo");
+        const {id}=req.query;
+        const todo = await Todo.findById(id);
+        res.render("edittodo",{todo});
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -46,4 +48,21 @@ const addTodoController = async (req, res, next) => {
     }
 };
 
-module.exports = { homeController, addTodoFormController, updateFormController, deleteFormController, addTodoController};
+const updateTodoController = async (req, res, next) => {
+    try {
+        const {id} = req.params;
+        const { title, desc } = req.body;
+        const todo = await Todo.findById(id);
+        if(!todo){
+            return res.status(400).json({message: "Todo not found"});
+        }
+        todo.title=title;
+        todo.desc=desc;
+        await todo.save();
+        res.redirect("/");
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { homeController, addTodoFormController, updateFormController, deleteFormController, addTodoController,updateTodoController};
