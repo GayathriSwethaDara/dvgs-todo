@@ -4,8 +4,6 @@ const bodyparser = require("body-parser");
 const connectMongodb = require("./init/mongodb");
 const todoRoute = require("./routes/todo");
 const dotenv = require("dotenv");
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
 const User = require('./models/User');
 
 // Load environment variables
@@ -22,17 +20,16 @@ app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyparser.urlencoded({ extended: true }));
 
-// Configure sessions
-app.use(session({
-    secret: process.env.SESSION_SECRET || 'your secret key',
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: process.env.CONNECTION_URL || 'mongodb://localhost/todo-app' })
-}));
+// Middleware to protect routes
+function ensureAuthenticated(req, res, next) {
+    if (req.headers.username && req.headers.password) {
+        return next();
+    } else {
+        res.redirect('/login');
+    }
+}
 
 // Routes
-app.use("/", todoRoute);
-
 app.get('/register', (req, res) => {
     res.render('register');
 });
@@ -44,6 +41,7 @@ app.post('/register', async (req, res) => {
         await user.save();
         res.redirect('/login');
     } catch (err) {
+        console.error(err);
         res.redirect('/register');
     }
 });
@@ -57,31 +55,35 @@ app.post('/login', async (req, res) => {
         const { username, password } = req.body;
         const user = await User.findOne({ username });
         if (user && await user.isValidPassword(password)) {
-            req.session.userId = user._id;
-            res.redirect('/');
+            res.redirect(`/?username=${username}&password=${password}`);
         } else {
             res.redirect('/login');
         }
     } catch (err) {
+        console.error(err);
         res.redirect('/login');
     }
 });
 
 app.get('/logout', (req, res) => {
-    req.session.destroy(err => {
-        if (err) {
-            return res.redirect('/');
-        }
-        res.clearCookie('connect.sid');
-        res.redirect('/login');
-    });
+    res.redirect('/login');
 });
 
-app.get('/', (req, res) => {
-    if (!req.session.userId) {
-        return res.redirect('/login');
+app.get('/', ensureAuthenticated, async (req, res) => {
+    try {
+        const { username, password } = req.headers;
+        const user = await User.findOne({ username });
+        if (user && await user.isValidPassword(password)) {
+            res.render('index', { user });
+        } else {
+            res.redirect('/login');
+        }
+    } catch (err) {
+        console.error(err);
+        res.redirect('/login');
     }
-    res.render('index');
 });
+
+app.use("/", todoRoute);
 
 module.exports = app;
