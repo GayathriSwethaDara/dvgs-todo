@@ -55,25 +55,38 @@
             background-color: #ff6b6b;
         }
 
-        table {
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .form-group input {
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
         }
 
-        th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
+        .form-group button {
+            width: 100%;
+            padding: 10px;
             background-color: #ff6b6b;
-            color: #fff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
         }
 
-        tr:hover {
-            background-color: #f1f1f1;
+        .form-group button:hover {
+            background-color: #ff4b4b;
         }
 
         .corner-image {
@@ -120,15 +133,18 @@
         <div>
             <a class="btn" href="/">Back</a>
             <form action="/add-todo" method="post">
+                <br>
                 <div class="new-todo">
                     <div class="form-group">
                         <label for="title" class="text-light">Title</label>
                         <input type="text" name="title" value="" placeholder="Type todo here" required="required" />
                     </div>
+                    <br>
                     <div class="form-group">
                         <label for="desc" class="text-light">Description</label>
                         <input type="text" name="desc" value="" placeholder="Type description here" />
                     </div>
+                    <br>
                     <div class="form-group">
                         <button type="submit" class="btn">Add Todo</button>
                     </div>

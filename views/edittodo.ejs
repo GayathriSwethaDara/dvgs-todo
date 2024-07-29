@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -54,25 +55,38 @@
             background-color: #ff6b6b;
         }
 
-        table {
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .form-group input {
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
         }
 
-        th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
+        .form-group button {
+            width: 100%;
+            padding: 10px;
             background-color: #ff6b6b;
-            color: #fff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
         }
 
-        tr:hover {
-            background-color: #f1f1f1;
+        .form-group button:hover {
+            background-color: #ff4b4b;
         }
 
         .corner-image {
@@ -109,6 +123,7 @@
         }
     </style>
 </head>
+
 <body>
     <img src="https://www.drawing123.com/wp-content/uploads/2023/09/How-to-draw-a-teddy-bear-Step-8-7.jpg" class="corner-image top-left" alt="Decoration">
     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKPYn3cNKCfoEN09irk3x96vDyoia9pgL-6sHvke4YwT5TbyDyiJ-_L4uLA_1O9mfuiiY&usqp=CAU" class="corner-image bottom-right" alt="Decoration">
@@ -119,14 +134,17 @@
             <a class="btn" href="/">Back</a>
             <form action="/edit-todo/<%= todo._id %>" method="post">
                 <div class="update-todo">
+                    <br>
                     <div class="form-group">
                         <label for="title" class="text-light">Title</label>
-                        <input type="text" name="title" value="<%= todo.title %>" placeholder="Type todo here"/>
+                        <input type="text" name="title" value="<%= todo.title %>" placeholder="Type todo here" />
                     </div>
+                    <br>
                     <div class="form-group">
                         <label for="desc" class="text-light">Description</label>
-                        <input type="text" name="desc" value="<%= todo.desc %>" placeholder="Type description here"/>
+                        <input type="text" name="desc" value="<%= todo.desc %>" placeholder="Type description here" />
                     </div>
+                    <br>
                     <div class="form-group">
                         <button type="submit" class="btn">Update</button>
                     </div>
@@ -135,4 +153,5 @@
         </div>
     </div>
 </body>
+
 </html>
