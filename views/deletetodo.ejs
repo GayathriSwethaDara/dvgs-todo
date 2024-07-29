@@ -1,24 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Delete todo</title>
-        <link rel="stylesheet" href="css/style.css">
-    </head>
-    <body>
-        <div class="table-container">
-            <h2 class="todo-title">Delete todo</h2>
-            <a class="btn" href="/">Back</a>
-      
-            <div class="confirm">
-              <p>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete todo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: white;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+            position: relative;
+        }
+
+        .table-container {
+            background: #fdeede;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 100%;
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+            max-height: 1000px;
+        }
+
+        .todo-title {
+            color: #ff6b6b;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 5px 0;
+            color: #fff;
+            background-color: #ff6b6b;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #ff6b6b;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #ff6b6b;
+            color: #fff;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .corner-image {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            z-index: 0;
+        }
+
+        .corner-image.top-left {
+            top: 0px;
+            left: 0px;
+            height: 400px;
+            width: 270px;
+        }
+
+        .corner-image.top-right {
+            top: 0px;
+            right: 0px;
+            height: 300px;
+            width: 250px;
+        }
+
+        .corner-image.bottom-left {
+            bottom: 10px;
+            left: 10px;
+        }
+
+        .corner-image.bottom-right {
+            bottom: 0px;
+            right: 0px;
+            height: 400px;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <img src="https://www.drawing123.com/wp-content/uploads/2023/09/How-to-draw-a-teddy-bear-Step-8-7.jpg" class="corner-image top-left" alt="Decoration">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKPYn3cNKCfoEN09irk3x96vDyoia9pgL-6sHvke4YwT5TbyDyiJ-_L4uLA_1O9mfuiiY&usqp=CAU" class="corner-image bottom-right" alt="Decoration">
+
+    <div class="table-container">
+        <h2 class="todo-title">Delete todo</h2>
+        <a class="btn" href="/">Back</a>
+  
+        <div class="confirm">
+            <p>
                 Are you sure you want delete this todo?
                 <a class="btn" href="/confirm-delete?id=<%= id %>&confirm=yes">Yes</a>
                 <a class="btn" href="/confirm-delete?id=<%= id %>&confirm=no">No</a>
-              </p>
-            </div>
-          </div>
-    </body>
+            </p>
+        </div>
+    </div>
+</body>
 </html>
