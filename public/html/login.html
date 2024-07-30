@@ -24,5 +24,15 @@
         <p>Don't have an account? <a href="/register.html">Register here</a></p>
     </div>
     </div>
+
+    <script>
+        // Check if there's an error parameter in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error');
+        
+        if (error) {
+            alert(error);
+        }
+    </script>
 </body>
 </html>

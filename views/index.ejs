@@ -61,7 +61,8 @@
             margin-top: 20px;
         }
 
-        th, td {
+        th,
+        td {
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
@@ -108,17 +109,35 @@
             height: 400px;
             width: 300px;
         }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            /* Adjusts the space between the buttons */
+        }
     </style>
 </head>
 
 <body>
-    <img src="https://www.drawing123.com/wp-content/uploads/2023/09/How-to-draw-a-teddy-bear-Step-8-7.jpg" class="corner-image top-left" alt="Decoration">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKPYn3cNKCfoEN09irk3x96vDyoia9pgL-6sHvke4YwT5TbyDyiJ-_L4uLA_1O9mfuiiY&usqp=CAU" class="corner-image bottom-right" alt="Decoration">
+    <img src="https://www.drawing123.com/wp-content/uploads/2023/09/How-to-draw-a-teddy-bear-Step-8-7.jpg"
+        class="corner-image top-left" alt="Decoration">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKPYn3cNKCfoEN09irk3x96vDyoia9pgL-6sHvke4YwT5TbyDyiJ-_L4uLA_1O9mfuiiY&usqp=CAU"
+        class="corner-image bottom-right" alt="Decoration">
 
     <div class="table-container">
         <h2 class="todo-title">Todo List</h2>
-        <div>
+        <div class="btn-container">
             <a class="btn" href="/add-todo">Add todo</a>
+            <form action="/logout" method="post">
+                <button class="btn" type="submit">Logout</button>
+            </form>
         </div>
         <br />
         <table>
@@ -132,24 +151,34 @@
                 </tr>
             </thead>
             <tbody>
-                <% if (todos.length > 0) { %>
-                    <% for(let i = 0; i < todos.length; i++) { %>
+                <% if (todos.length> 0) { %>
+                    <% for(let i=0; i < todos.length; i++) { %>
                         <tr>
-                            <td><%= todos[i].title %></td>
-                            <td><%= todos[i].desc %></td>
-                            <td><%= moment(todos[i].createdAt).format("MMM DD, YYYY, HH:mm:ss") %></td>
-                            <td><%= moment(todos[i].updatedAt).format("MMM DD, YYYY, HH:mm:ss") %></td>
                             <td>
-                                <a class="btn" href="/edit-todo?id=<%= todos[i]._id %>">Edit</a>
-                                <a class="btn" href="/delete-todo?id=<%= todos[i]._id %>">Delete</a>
+                                <%= todos[i].title %>
+                            </td>
+                            <td>
+                                <%= todos[i].desc %>
+                            </td>
+                            <td>
+                                <%= moment(todos[i].createdAt).format("MMM DD, YYYY, HH:mm:ss") %>
+                            </td>
+                            <td>
+                                <%= moment(todos[i].updatedAt).format("MMM DD, YYYY, HH:mm:ss") %>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a class="btn" href="/edit-todo?id=<%= todos[i]._id %>">Edit</a>
+                                    <a class="btn" href="/delete-todo?id=<%= todos[i]._id %>">Delete</a>
+                                </div>
                             </td>
                         </tr>
-                    <% } %>
-                <% } else { %>
-                    <tr>
-                        <td colspan="5">No todos found</td>
-                    </tr>
-                <% } %>
+                        <% } %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="5">No todos found</td>
+                                </tr>
+                                <% } %>
             </tbody>
         </table>
     </div>

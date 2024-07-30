@@ -7,8 +7,8 @@ const dotenv = require("dotenv");
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const User = require('./models/User');
-const Todo = require('./models/Todo'); // Import the Todo model
-const moment = require('moment'); // Import moment
+const Todo = require('./models/Todo');
+const moment = require('moment');
 
 // Load environment variables
 dotenv.config();
@@ -21,9 +21,9 @@ connectMongodb();
 
 // Set view engine
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views")); // Ensure views directory is set
+app.set("views", path.join(__dirname, "views"));
 
-// Set static directory for HTML files
+// Set static directory
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyparser.urlencoded({ extended: true }));
 
@@ -65,7 +65,8 @@ app.post('/register', async (req, res) => {
 });
 
 app.get('/login.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/html/login.html'));
+    const error = req.query.error ? req.query.error : '';
+    res.sendFile(path.join(__dirname, 'public/html/login.html'), { error });
 });
 
 app.post('/login', async (req, res) => {
@@ -76,14 +77,14 @@ app.post('/login', async (req, res) => {
             req.session.userId = user._id;
             res.redirect('/');
         } else {
-            res.redirect('/login.html');
+            res.redirect('/login.html?error=Invalid credentials');
         }
     } catch (err) {
-        res.redirect('/login.html');
+        res.redirect('/login.html?error=Invalid credentials');
     }
 });
 
-app.get('/logout', (req, res) => {
+app.post('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {
             return res.redirect('/');
@@ -95,8 +96,8 @@ app.get('/logout', (req, res) => {
 
 app.get('/', ensureAuthenticated, async (req, res) => {
     try {
-        const todos = await Todo.find({}); // Fetch all todos (modify if you need to filter by user)
-        res.render('index', { todos, moment }); // Pass todos and moment to the view
+        const todos = await Todo.find();
+        res.render('index', { todos, moment });
     } catch (err) {
         res.redirect('/login.html');
     }
