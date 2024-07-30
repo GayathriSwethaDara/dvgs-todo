@@ -1,8 +1,14 @@
 body {
+  background-image: url('https://t3.ftcdn.net/jpg/05/13/59/72/360_F_513597277_YYqrogAmgRR9ohwTUnOM784zS9eYUcSk.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
   font-family: Arial, sans-serif;
-  background: #f5f5f5;
   margin: 0;
   padding: 0;
+}
+
+.container {
   display: flex;
   justify-content: center;
   align-items: center;

@@ -7,7 +7,8 @@ const dotenv = require("dotenv");
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const User = require('./models/User');
-const Todo = require('./models/Todo'); // Add this line to import the Todo model
+const Todo = require('./models/Todo'); // Import the Todo model
+const moment = require('moment'); // Import moment
 
 // Load environment variables
 dotenv.config();
@@ -18,9 +19,9 @@ const app = express();
 // Connect to MongoDB
 connectMongodb();
 
-// Set view engine for index.ejs
+// Set view engine
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views")); // Set the views directory
+app.set("views", path.join(__dirname, "views")); // Ensure views directory is set
 
 // Set static directory for HTML files
 app.use(express.static(path.join(__dirname, "public")));
@@ -94,8 +95,8 @@ app.get('/logout', (req, res) => {
 
 app.get('/', ensureAuthenticated, async (req, res) => {
     try {
-        const todos = await Todo.find({ userId: req.session.userId }); // Fetch todos from the database
-        res.render('index', { todos }); // Pass todos to the view
+        const todos = await Todo.find({}); // Fetch all todos (modify if you need to filter by user)
+        res.render('index', { todos, moment }); // Pass todos and moment to the view
     } catch (err) {
         res.redirect('/login.html');
     }
