@@ -17,12 +17,13 @@ connectMongodb();
 
 // Set view engine
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views")); // Set the views directory
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyparser.urlencoded({ extended: true }));
 
 // Middleware to protect routes
 function ensureAuthenticated(req, res, next) {
-    if (req.headers.username && req.headers.password) {
+    if (req.session.userId) {
         return next();
     } else {
         res.redirect('/login');
@@ -41,7 +42,6 @@ app.post('/register', async (req, res) => {
         await user.save();
         res.redirect('/login');
     } catch (err) {
-        console.error(err);
         res.redirect('/register');
     }
 });
@@ -53,33 +53,33 @@ app.get('/login', (req, res) => {
 app.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
-        const user = await User.findOne({ username });
-        if (user && await user.isValidPassword(password)) {
-            res.redirect(`/?username=${username}&password=${password}`);
+        const user = await User.findOne({ username, password });
+        if (user) {
+            req.session.userId = user._id;
+            res.redirect('/');
         } else {
             res.redirect('/login');
         }
     } catch (err) {
-        console.error(err);
         res.redirect('/login');
     }
 });
 
 app.get('/logout', (req, res) => {
-    res.redirect('/login');
+    req.session.destroy(err => {
+        if (err) {
+            return res.redirect('/');
+        }
+        res.clearCookie('connect.sid');
+        res.redirect('/login');
+    });
 });
 
 app.get('/', ensureAuthenticated, async (req, res) => {
     try {
-        const { username, password } = req.headers;
-        const user = await User.findOne({ username });
-        if (user && await user.isValidPassword(password)) {
-            res.render('index', { user });
-        } else {
-            res.redirect('/login');
-        }
+        const user = await User.findById(req.session.userId);
+        res.render('index', { user });
     } catch (err) {
-        console.error(err);
         res.redirect('/login');
     }
 });
